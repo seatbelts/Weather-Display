@@ -1,13 +1,16 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router'
+import { ActivatedRoute, Router } from '@angular/router'
 import { WeatherService } from '../services/weather.service';
 import { Forecast } from '../interfaces/forecast';
 
-import { Chart, ChartConfiguration, ChartEvent, ChartType } from 'chart.js';
+import { Chart, ChartConfiguration, ChartType } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
+import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 
 import Annotation from 'chartjs-plugin-annotation';
-import { Observable, map } from 'rxjs';
+
+import { Observable, catchError, map } from 'rxjs';
+import { ErrorModalComponent } from '../modals/error-modal/error-modal.component';
 
 @Component({
   selector: 'app-weather-details',
@@ -17,6 +20,8 @@ import { Observable, map } from 'rxjs';
 export class WeatherDetailsComponent implements OnInit{
 
   private forecastId: string = '';
+
+  private modalInstance?: BsModalRef;
 
   public title: string = '';
 
@@ -56,11 +61,15 @@ export class WeatherDetailsComponent implements OnInit{
 
   public lineChartType: ChartType = 'line';
 
+  public modalRef?: BsModalRef;
+
   @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
 
   constructor(
     private route: ActivatedRoute,
-    private weatherService: WeatherService
+    private router: Router,
+    private weatherService: WeatherService,
+    private modalService: BsModalService,
   ) {
     Chart.register(Annotation);
   }
@@ -83,8 +92,25 @@ export class WeatherDetailsComponent implements OnInit{
           this.lineChartData.datasets[0].label = this.forecastId + ' Forecast';
           this.lineChartData.labels = forecastData.map((forecast: Forecast) => forecast.name);
           return forecastData;
+        }),
+        catchError(error => {
+          this.openErrorModal();
+          throw error;
         })
       )
+  }
+
+  private openErrorModal(): void {
+    const modalOptions: ModalOptions = {
+      initialState: {
+        title: this.forecastId            }
+    };
+
+    this.modalInstance = this.modalService.show(ErrorModalComponent, modalOptions);
+
+    this.modalInstance.onHide?.subscribe(() => {
+      this.router.navigate(['weather']);
+    });
   }
 
 }
