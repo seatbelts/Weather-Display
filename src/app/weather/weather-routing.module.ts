@@ -6,12 +6,10 @@ import { WeatherListComponent } from './weather-list/weather-list.component';
 const routes: Routes = [
   {
     path: '', component: WeatherListComponent,
-    children: [
-      {
-        path: ':location',
-        component: WeatherDetailsComponent
-      },
-    ],
+  },
+  {
+    path: 'details/:location',
+    component: WeatherDetailsComponent
   },
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
