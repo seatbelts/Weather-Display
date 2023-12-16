@@ -23,11 +23,11 @@ export class WeatherListComponent {
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
   ) {}
 
 
   navigateTo(forecastId: string): void {
-    this.router.navigate([forecastId], { relativeTo: this.route });
+    this.router.navigate(['details', forecastId], { relativeTo: this.route });
   }
 }
