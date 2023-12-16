@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
 import { Observable, map } from 'rxjs';
+import { Forecast } from '../interfaces/forecast';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class WeatherService {
     private http: HttpClient
   ) { }
 
-  retrievveWeatherForecasts(forecastId: string): Observable<any> {
+  retrieveWeatherForecasts(forecastId: string): Observable<Forecast[]> {
     const url = `https://api.weather.gov/gridpoints/${forecastId}/31,80/forecast`;
     return this.http.get(url)
       .pipe(
