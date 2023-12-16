@@ -11,8 +11,8 @@ export class WeatherListComponent {
   forecasts = [
     {
       title: 'District of Columbia',
-      abbreviation: 'LOX',
-      id: 'lox'
+      abbreviation: 'LWX',
+      id: 'lwx'
     },
     {
       title: 'Kansas',
