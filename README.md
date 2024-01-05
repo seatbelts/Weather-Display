@@ -1,8 +1,6 @@
-# WisyTakeHome
+# Weather Display
 
-## Objective
-
-Create an Angular app that fetches data from an API and visualizes it using Chart.js. The app should display a line chart representing the data.
+Angular app that fetches data from an API and visualizes it using Chart.js. The app should display a line chart representing the data.
 
 ## Pre Requirements
 
